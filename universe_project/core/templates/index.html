@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Clientes</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 40px;
+            background-color: #f9f9f9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+        }
+        tr:hover {
+            background: #f1f1f1;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h2>Clientes Cadastrados</h2>
+    <a href="{% url 'cadastrar_cliente' %}">Cadastrar novo cliente</a>
+    <table>
+        <tr>
+            <th>Conta</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>Saldo</th>
+        </tr>
+        {% for cliente in clientes %}
+        <tr>
+            <td>{{ cliente.conta }}</td>
+            <td>{{ cliente.nome }}</td>
+            <td>{{ cliente.email }}</td>
+            <td>{{ cliente.telefone }}</td>
+            <td>R$ {{ cliente.saldo }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">Nenhum cliente cadastrado.</td></tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
