@@ -22,9 +22,21 @@
         tr:hover {
             background: #f1f1f1;
         }
-        a {
+        a.button {
+            background-color: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
             text-decoration: none;
-            color: #007bff;
+        }
+        a.button:hover {
+            background-color: #0056b3;
+        }
+        a.delete {
+            background-color: #dc3545;
+        }
+        a.delete:hover {
+            background-color: #b02a37;
         }
     </style>
 </head>
@@ -38,6 +50,7 @@
             <th>Email</th>
             <th>Telefone</th>
             <th>Saldo</th>
+            <th>Ações</th>
         </tr>
         {% for cliente in clientes %}
         <tr>
@@ -45,10 +58,14 @@
             <td>{{ cliente.nome }}</td>
             <td>{{ cliente.email }}</td>
             <td>{{ cliente.telefone }}</td>
-            <td>R$ {{ cliente.saldo }}</td>
+            <td>R$ {{ cliente.saldo|floatformat:2 }}</td>
+            <td>
+                <a href="{% url 'editar_cliente' cliente.id %}" class="button">Alterar</a>
+                <a href="{% url 'excluir_cliente' cliente.id %}" class="button delete">Excluir</a>
+            </td>
         </tr>
         {% empty %}
-        <tr><td colspan="5">Nenhum cliente cadastrado.</td></tr>
+        <tr><td colspan="6">Nenhum cliente cadastrado.</td></tr>
         {% endfor %}
     </table>
 </body>
