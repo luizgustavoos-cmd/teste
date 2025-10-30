@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Modal com Formulário</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f5f5f5;
+            text-align: center;
+            padding: 50px;
+        }
+
+        /* Botão que abre o modal */
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Fundo escurecido */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        /* Caixa do modal */
+        .modal-content {
+            background: white;
+            width: 400px;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            text-align: left;
+        }
+
+        .close {
+            float: right;
+            font-size: 22px;
+            cursor: pointer;
+            color: #666;
+        }
+        .close:hover {
+            color: red;
+        }
+
+        /* Campos do formulário */
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Botões dentro do modal */
+        .botoes {
+            text-align: right;
+            margin-top: 10px;
+        }
+        .botoes button {
+            padding: 8px 15px;
+            margin-left: 5px;
+        }
+        .salvar {
+            background-color: #28a745;
+        }
+        .salvar:hover {
+            background-color: #218838;
+        }
+        .cancelar {
+            background-color: #6c757d;
+        }
+        .cancelar:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Exemplo: Edição de Cliente</h2>
+    <button id="abrirModal">Editar Cliente</button>
+
+    <!-- Modal -->
+    <div id="meuModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Editar Dados do Cliente</h3>
+
+            <form id="formCliente">
+                <label>Nome:</label>
+                <input type="text" id="nome" value="João Silva">
+
+                <label>E-mail:</label>
+                <input type="email" id="email" value="joao@email.com">
+
+                <label>Telefone:</label>
+                <input type="text" id="telefone" value="(87) 99999-0000">
+
+                <label>Saldo:</label>
+                <input type="number" id="saldo" value="250.00" step="0.01">
+
+                <div class="botoes">
+                    <button type="button" class="cancelar" id="fecharBtn">Cancelar</button>
+                    <button type="submit" class="salvar">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('meuModal');
+        const btnAbrir = document.getElementById('abrirModal');
+        const btnFechar = document.getElementById('fecharBtn');
+        const spanFechar = document.querySelector('.close');
+        const form = document.getElementById('formCliente');
+
+        // Abre o modal
+        btnAbrir.onclick = () => modal.style.display = 'block';
+        // Fecha (botão ou X)
+        btnFechar.onclick = () => modal.style.display = 'none';
+        spanFechar.onclick = () => modal.style.display = 'none';
+        // Fecha clicando fora
+        window.onclick = (event) => {
+            if (event.target === modal) modal.style.display = 'none';
+        }
+
+        // Intercepta envio do formulário
+        form.onsubmit = (event) => {
+            event.preventDefault(); // evita recarregar a página
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const telefone = document.getElementById('telefone').value;
+            const saldo = document.getElementById('saldo').value;
+            alert(`Alterações salvas!\n\nNome: ${nome}\nE-mail: ${email}\nTelefone: ${telefone}\nSaldo: R$ ${saldo}`);
+            modal.style.display = 'none';
+        };
+    </script>
+
+</body>
+</html>

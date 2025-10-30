@@ -9,6 +9,8 @@
             padding: 40px;
             background-color: #f9f9f9;
         }
+
+        /* ======== TABELA DE CLIENTES ======== */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -38,11 +40,61 @@
         a.delete:hover {
             background-color: #b02a37;
         }
+
+        /* ======== BOTÃO DE TESTE PARA MODAL ======== */
+        #abrirModal {
+            padding: 10px 20px;
+            margin: 15px 0;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #abrirModal:hover {
+            background-color: #218838;
+        }
+
+        /* ======== ESTILOS DO MODAL ======== */
+        .modal {
+            display: none; /* invisível inicialmente */
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); /* fundo escuro */
+            z-index: 10;
+        }
+        .modal-content {
+            background: white;
+            width: 400px;
+            margin: 10% auto; /* centraliza vertical e horizontal */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            text-align: left;
+        }
+        .close {
+            float: right;
+            font-size: 22px;
+            cursor: pointer;
+            color: #666;
+        }
+        .close:hover {
+            color: red;
+        }
     </style>
 </head>
 <body>
+
+    <!-- ======== TÍTULO ======== -->
     <h2>Clientes Cadastrados</h2>
-    <a href="{% url 'cadastrar_cliente' %}">Cadastrar novo cliente</a>
+
+    <!-- ======== BOTÕES ======== -->
+    <a href="{% url 'cadastrar_cliente' %}" class="button">Cadastrar novo cliente</a>
+    <button id="abrirModal">Abrir Modal de Teste</button>
+
+    <!-- ======== TABELA DE CLIENTES ======== -->
     <table>
         <tr>
             <th>Conta</th>
@@ -60,6 +112,7 @@
             <td>{{ cliente.telefone }}</td>
             <td>R$ {{ cliente.saldo|floatformat:2 }}</td>
             <td>
+                <!-- Botões originais -->
                 <a href="{% url 'editar_cliente' cliente.id %}" class="button">Alterar</a>
                 <a href="{% url 'excluir_cliente' cliente.id %}" class="button delete">Excluir</a>
             </td>
@@ -68,5 +121,44 @@
         <tr><td colspan="6">Nenhum cliente cadastrado.</td></tr>
         {% endfor %}
     </table>
+
+    <!-- ======== MODAL ======== -->
+    <div id="meuModal" class="modal">
+        <div class="modal-content">
+            <!-- Botão de fechar -->
+            <span class="close">&times;</span>
+
+            <!-- Conteúdo do modal -->
+            <h3>Modal de Teste</h3>
+            <p>Este modal está integrado na tela de clientes.</p>
+            <p>A próxima etapa será colocar o formulário de cadastro/edição aqui dentro.</p>
+            
+            <button id="fecharBtn">Fechar</button>
+        </div>
+    </div>
+
+    <!-- ======== SCRIPT DO MODAL ======== -->
+    <script>
+        // Seleciona elementos
+        const modal = document.getElementById('meuModal');
+        const btnAbrir = document.getElementById('abrirModal');
+        const btnFechar = document.getElementById('fecharBtn');
+        const spanFechar = document.querySelector('.close');
+
+        // Abre modal ao clicar no botão
+        btnAbrir.onclick = () => modal.style.display = 'block';
+
+        // Fecha modal ao clicar no botão "Fechar"
+        btnFechar.onclick = () => modal.style.display = 'none';
+
+        // Fecha modal ao clicar no "X"
+        spanFechar.onclick = () => modal.style.display = 'none';
+
+        // Fecha modal clicando fora da caixa
+        window.onclick = (event) => {
+            if (event.target === modal) modal.style.display = 'none';
+        }
+    </script>
+
 </body>
 </html>
