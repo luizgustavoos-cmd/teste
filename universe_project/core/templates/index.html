@@ -11,52 +11,68 @@
         }
 
         /* ======== TABELA DE CLIENTES ======== */
+        .table-container {
+            background: linear-gradient(180deg, #ffffff, #fbfbfd);
+            padding: 14px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(20,20,40,0.06);
+            margin-top: 12px;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
+            background: transparent;
+            font-size: 14px;
         }
         th, td {
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
+            padding: 12px 14px;
+            border-bottom: 1px solid #ececec;
             text-align: left;
+            vertical-align: middle;
         }
-        tr:hover {
-            background: #f1f1f1;
+        thead th {
+            background: linear-gradient(90deg,#f5f7fb,#eef3ff);
+            color: #222;
+            font-weight: 600;
+            border-bottom: 2px solid #e6e9f2;
         }
-        a.button {
+        tbody tr:nth-child(even) { background: #fafbff; }
+        tbody tr:hover { background: #f0f6ff; }
+        /* Botões na Tabela e Cadastro */
+        button.button, a.button, #abrirModalCadastrar {
             background-color: #007bff;
             color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 6px 12px;
+            border-radius: 8px;
             text-decoration: none;
+            border: none;
+            cursor: pointer;
+            margin-right: 6px; /* Espaçamento entre os botões */
+            display: inline-flex; align-items: center; gap: 8px;
+            font-weight: 600;
         }
-        a.button:hover {
+        button.button:hover, a.button:hover {
             background-color: #0056b3;
         }
-        a.delete {
+        button.delete, a.delete {
             background-color: #dc3545;
         }
-        a.delete:hover {
+        button.delete:hover, a.delete:hover {
             background-color: #b02a37;
         }
 
-        /* ======== BOTÃO DE TESTE PARA MODAL ======== */
-        #abrirModal {
+        /* ======== BOTÃO DE CADASTRO ======== */
+        #abrirModalCadastrar {
+            background-color: #28a745;
             padding: 10px 20px;
             margin: 15px 0;
-            border: none;
-            background-color: #28a745;
-            color: white;
             font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
         }
-        #abrirModal:hover {
+        #abrirModalCadastrar:hover {
             background-color: #218838;
         }
 
-        /* ======== ESTILOS DO MODAL ======== */
+        /* ======== ESTILOS DO MODAL GERAL ======== */
         .modal {
             display: none; /* invisível inicialmente */
             position: fixed;
@@ -67,12 +83,20 @@
         }
         .modal-content {
             background: white;
-            width: 400px;
-            margin: 10% auto; /* centraliza vertical e horizontal */
+            width: 600px;
+            max-width: 90%;
+            margin: 6% auto; /* centraliza vertical e horizontal */
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0,0,0,0.3);
             text-align: left;
+            min-height: 240px; /* garante espaço para o formulário */
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        /* Permite rolagem interna se o conteúdo for maior que a viewport */
+        @media (max-height: 700px) {
+            .modal-content { max-height: 80vh; overflow-y: auto; }
         }
         .close {
             float: right;
@@ -83,18 +107,108 @@
         .close:hover {
             color: red;
         }
+        
+        /* ======== ESTILOS DO FORMULÁRIO DENTRO DO MODAL ======== */
+        #clienteForm label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        /* Estilo para todos os inputs/widgets gerados pelo Django */
+        #clienteForm input, #clienteForm select, #clienteForm textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        /* Força cores/visibilidade dos labels/inputs caso alguma regra externa esteja escondendo-os */
+        #clienteForm label, #clienteFormTemplate label { color: #222; display: block; margin-bottom: 4px; }
+        #clienteForm input, #clienteForm select, #clienteForm textarea, #clienteFormTemplate input, #clienteFormTemplate select, #clienteFormTemplate textarea { background: #fff; color: #111; }
+        /* Garante espaçamento entre grupos do formulário */
+        .form-group { margin-bottom: 12px; }
+        /* Força o formulário a ocupar espaço e empurra os botões para o final */
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+            min-height: 180px;
+        }
+        /* botoes no final do form */
+        .modal-content .botoes { margin-top: auto; display: flex; gap: 8px; justify-content: flex-end; }
+        .modal-content .botoes .cancelar, .modal-content .botoes .salvar { min-width: 140px; }
+        /* estilo para botões empilhados (usado no modal de exclusão) */
+        .botoes-vertical { display: flex; flex-direction: column; gap: 8px; }
+        .botoes-vertical button { width: 100%; padding: 10px; border-radius: 6px; }
+    /* Saldo badge */
+    .saldo-badge { background: linear-gradient(90deg,#fff7e6,#fff1d6); color: #7a4b00; padding: 6px 10px; border-radius: 999px; font-weight:700; display:inline-block }
+    /* Actions cell layout */
+    .actions { display:flex; gap:8px; align-items:center }
+    .action-small { padding:6px 10px; border-radius:8px; font-weight:600 }
+    .action-edit { background:#17a2b8; color:#fff }
+    .action-delete { background:#e14b4b; color:#fff }
+    .action-view { background:#6c757d; color:#fff }
+    /* Responsive table */
+    .table-responsive { overflow-x:auto }
+        /* Estilo para a lista de erros do Django */
+        .errorlist {
+            color: #dc3545;
+            list-style: none;
+            padding-left: 0;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+        /* Estilos dos botões no rodapé do modal */
+        .botoes {
+            text-align: right; 
+            margin-top: 15px;
+        }
+        .botoes button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        .salvar { background-color: #28a745; }
+        .salvar:hover { background-color: #218838; }
+        .cancelar { background-color: #6c757d; }
+        .cancelar:hover { background-color: #5a6268; }
+        /* Mensagens flash (Django messages) */
+        .messages { padding: 0; margin: 0 0 20px 0; }
+        .messages .message { list-style: none; padding: 10px; margin-bottom: 15px; border-radius: 5px; font-weight: bold; color: white; }
+        .messages .success { background-color: #28a745; }
+        .messages .warning { background-color: #ffc107; color: #333; }
+        .messages .error { background-color: #dc3545; }
+        .messages .info { background-color: #007bff; }
+        /* Garante que botões de ação nos modais tenham tamanho consistente */
+        .modal-content .botoes .cancelar,
+        .modal-content .botoes .salvar,
+        #modalExcluir .modal-content button.cancelar,
+        #modalExcluir .modal-content button.button.delete {
+            min-width: 140px; /* mesmo tamanho mínimo */
+            display: inline-block;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
-    <!-- ======== TÍTULO ======== -->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li class="message {{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <h2>Clientes Cadastrados</h2>
 
-    <!-- ======== BOTÕES ======== -->
-    <a href="{% url 'cadastrar_cliente' %}" class="button">Cadastrar novo cliente</a>
-    <button id="abrirModal">Abrir Modal de Teste</button>
+    <button id="abrirModalCadastrar">➕ Cadastrar novo cliente</button>
 
-    <!-- ======== TABELA DE CLIENTES ======== -->
+    <div class="table-container table-responsive">
     <table>
         <tr>
             <th>Conta</th>
@@ -106,59 +220,304 @@
         </tr>
         {% for cliente in clientes %}
         <tr>
-            <td>{{ cliente.conta }}</td>
-            <td>{{ cliente.nome }}</td>
-            <td>{{ cliente.email }}</td>
-            <td>{{ cliente.telefone }}</td>
-            <td>R$ {{ cliente.saldo|floatformat:2 }}</td>
-            <td>
-                <!-- Botões originais -->
-                <a href="{% url 'editar_cliente' cliente.id %}" class="button">Alterar</a>
-                <a href="{% url 'excluir_cliente' cliente.id %}" class="button delete">Excluir</a>
+            <td style="width:110px">{{ cliente.conta }}</td>
+            <td style="min-width:180px">{{ cliente.nome }}</td>
+            <td style="min-width:200px">{{ cliente.email }}</td>
+            <td style="width:130px">{{ cliente.telefone }}</td>
+            <td><span class="saldo-badge">R$ {{ cliente.saldo|floatformat:2 }}</span></td>
+            <td class="actions">
+                <button 
+                    data-id="{{ cliente.id }}" 
+                    data-nome="{{ cliente.nome|escapejs }}"
+                    data-email="{{ cliente.email|escapejs }}"
+                    data-telefone="{{ cliente.telefone|escapejs }}"
+                    data-saldo="{{ cliente.saldo|floatformat:2|escapejs }}"
+                    class="action-small action-edit btn-alterar"  
+                >✏️ Alterar</button>
+                <button 
+                    data-id="{{ cliente.id }}"
+                    data-nome="{{ cliente.nome|escapejs }}"
+                    class="action-small action-delete btn-excluir"
+                >🗑️ Excluir</button>
             </td>
         </tr>
         {% empty %}
         <tr><td colspan="6">Nenhum cliente cadastrado.</td></tr>
         {% endfor %}
     </table>
+    </div>
 
-    <!-- ======== MODAL ======== -->
     <div id="meuModal" class="modal">
         <div class="modal-content">
-            <!-- Botão de fechar -->
-            <span class="close">&times;</span>
+            <span class="close" onclick="fecharModal()">&times;</span>
 
-            <!-- Conteúdo do modal -->
-            <h3>Modal de Teste</h3>
-            <p>Este modal está integrado na tela de clientes.</p>
-            <p>A próxima etapa será colocar o formulário de cadastro/edição aqui dentro.</p>
-            
-            <button id="fecharBtn">Fechar</button>
+            <h3 id="modalTitle"></h3>
+            <form method="POST" id="clienteForm" action="">
+                <!-- form content is cloned from the hidden template (#clienteFormTemplate) to avoid double-render issues -->
+            </form>
         </div>
     </div>
 
-    <!-- ======== SCRIPT DO MODAL ======== -->
-    <script>
-        // Seleciona elementos
+    <!-- Template oculto do formulário (usado como fallback quando o form no modal fica vazio) -->
+    <div id="clienteFormTemplate" style="display:none">
+        <form method="POST" id="clienteFormTemplateInner">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="id_nome">Nome</label>
+                <input type="text" name="nome" id="id_nome" placeholder="Nome completo" />
+            </div>
+
+            <div class="form-group">
+                <label for="id_saldo">Saldo</label>
+                <input type="number" step="0.01" name="saldo" id="id_saldo" placeholder="Saldo inicial" />
+            </div>
+
+            <div class="form-group">
+                <label for="id_email">E-mail</label>
+                <input type="email" name="email" id="id_email" placeholder="E-mail" />
+            </div>
+
+            <div class="form-group">
+                <label for="id_telefone">Telefone</label>
+                <input type="text" name="telefone" id="id_telefone" placeholder="Telefone" />
+            </div>
+
+            <div class="botoes">
+                <button type="button" class="cancelar" onclick="fecharModal()">Cancelar</button>
+                <button type="submit" class="salvar">Salvar</button>
+            </div>
+        </form>
+    </div>
+
+
+    <div id="modalExcluir" class="modal">
+        <div class="modal-content" style="width: 300px; text-align: center;">
+            <span class="close" onclick="fecharModalExcluir()">&times;</span>
+            <h3>Confirmar Exclusão</h3>
+            <p>Tem certeza que deseja excluir o cliente <br><b><span id="nomeClienteExcluir"></span></b>?</p>
+            
+            <form method="POST" id="formExcluir" action="">
+                {% csrf_token %}
+                <div class="botoes-vertical" style="margin-top: 20px;">
+                    <button type="submit" class="button delete">Sim, Excluir</button>
+                    <button type="button" class="cancelar" onclick="fecharModalExcluir()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+        {% if erros_cadastro %}
+        <div id="reabrir_cadastro" style="display:none"></div>
+        {% endif %}
+        {% if erros_edicao and pk_erro_edicao %}
+        <div id="reabrir_edicao" data-pk="{{ pk_erro_edicao }}" style="display:none"></div>
+        {% endif %}
+
+        <script>
+            // On page load, ensure the visible modal form is populated from the hidden template
+            document.addEventListener('DOMContentLoaded', function() {
+                const visibleForm = document.getElementById('clienteForm');
+                const tpl = document.getElementById('clienteFormTemplate');
+                if (visibleForm && tpl && !visibleForm.querySelector('input,select,textarea')) {
+                    const inner = tpl.querySelector('#clienteFormTemplateInner');
+                    if (inner) {
+                        visibleForm.innerHTML = inner.innerHTML;
+                        console.debug('DOMContentLoaded: cloned template into visible form, fields=', visibleForm.querySelectorAll('input,select,textarea').length);
+                    }
+                }
+            });
+        // === ELEMENTOS COMUNS ===
         const modal = document.getElementById('meuModal');
-        const btnAbrir = document.getElementById('abrirModal');
-        const btnFechar = document.getElementById('fecharBtn');
-        const spanFechar = document.querySelector('.close');
+        const form = document.getElementById('clienteForm');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalExcluir = document.getElementById('modalExcluir');
+        const formExcluir = document.getElementById('formExcluir');
+        
+        // URLs do Django (obtidas via template tags)
+        const urlCadastrar = "{% url 'cadastrar_cliente' %}";
+        const urlEditarBase = "{% url 'editar_cliente' 0 %}"; 
+        const urlExcluirBase = "{% url 'excluir_cliente' 0 %}";
 
-        // Abre modal ao clicar no botão
-        btnAbrir.onclick = () => modal.style.display = 'block';
 
-        // Fecha modal ao clicar no botão "Fechar"
-        btnFechar.onclick = () => modal.style.display = 'none';
-
-        // Fecha modal ao clicar no "X"
-        spanFechar.onclick = () => modal.style.display = 'none';
-
-        // Fecha modal clicando fora da caixa
-        window.onclick = (event) => {
-            if (event.target === modal) modal.style.display = 'none';
+        // === FUNÇÕES GERAIS ===
+        function fecharModal() {
+            modal.style.display = 'none';
+            form.reset(); 
+            form.action = '';
+            // Limpa o estado de erro visualmente
+            const errorLists = form.querySelectorAll('.errorlist');
+            errorLists.forEach(ul => ul.remove());
         }
-    </script>
 
-</body>
-</html>
+        function fecharModalExcluir() {
+            modalExcluir.style.display = 'none';
+            formExcluir.action = '';
+        }
+
+        // Abrir modal de cadastro
+        document.getElementById('abrirModalCadastrar').addEventListener('click', function() {
+            modalTitle.textContent = 'Cadastrar Cliente';
+            form.action = urlCadastrar;
+            // limpa eventuais erros exibidos e reseta campos
+            const errorLists = form.querySelectorAll('.errorlist');
+            errorLists.forEach(ul => ul.remove());
+            if (typeof form.reset === 'function') form.reset();
+            // Se por algum motivo os campos não estiverem presentes (ex: form foi substituído via AJAX
+            // e está vazio), recupera o form da página atual para garantir os inputs
+            if (!form.querySelector('[name="nome"]')) {
+                // fallback: clona o formulário renderizado no template oculto
+                const tpl = document.getElementById('clienteFormTemplate');
+                if (tpl) {
+                    const inner = tpl.querySelector('#clienteFormTemplateInner');
+                    if (inner) {
+                        form.innerHTML = inner.innerHTML;
+                        console.debug('abrirModalCadastrar: form.innerHTML length=', form.innerHTML.length);
+                        const fields = form.querySelectorAll('input,select,textarea');
+                        console.debug('abrirModalCadastrar: fields found=', fields.length);
+                        fields.forEach((f,i)=> console.debug(' field['+i+'] name=', f.name, 'type=', f.type));
+                    }
+                }
+                modal.style.display = 'block';
+            } else {
+                modal.style.display = 'block';
+            }
+        });
+
+        // Botões de alterar
+        document.querySelectorAll('.btn-alterar').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.dataset.id;
+                const nome = this.dataset.nome || '';
+                const email = this.dataset.email || '';
+                const telefone = this.dataset.telefone || '';
+                const saldo = this.dataset.saldo || '';
+
+                modalTitle.textContent = 'Editar Cliente';
+                // Preenche os campos do formulário (procura por elementos pelo atributo name)
+                const inNome = form.querySelector('[name="nome"]');
+                const inEmail = form.querySelector('[name="email"]');
+                const inTelefone = form.querySelector('[name="telefone"]');
+                const inSaldo = form.querySelector('[name="saldo"]');
+                if (inNome) inNome.value = nome;
+                if (inEmail) inEmail.value = email;
+                if (inTelefone) inTelefone.value = telefone;
+                if (inSaldo) inSaldo.value = saldo;
+
+                // Se os inputs não existirem, tenta recuperar o form da página e reaplicar
+                if (!inNome) {
+                    // fallback: clona o formulário renderizado no template oculto
+                    const tpl = document.getElementById('clienteFormTemplate');
+                    if (tpl) {
+                        const inner = tpl.querySelector('#clienteFormTemplateInner');
+                        if (inner) {
+                            form.innerHTML = inner.innerHTML;
+                            // reaplica valores
+                            const inN = form.querySelector('[name="nome"]');
+                            const inE = form.querySelector('[name="email"]');
+                            const inT = form.querySelector('[name="telefone"]');
+                            const inS = form.querySelector('[name="saldo"]');
+                            if (inN) inN.value = nome;
+                            if (inE) inE.value = email;
+                            if (inT) inT.value = telefone;
+                            if (inS) inS.value = saldo;
+                            console.debug('btn-alterar: after clone fields=', form.querySelectorAll('input,select,textarea').length);
+                        }
+                    }
+                    form.action = urlEditarBase.replace('/0/', '/' + id + '/');
+                    modal.style.display = 'block';
+                    return;
+                }
+
+                // Ajusta a action para edição
+                form.action = urlEditarBase.replace('/0/', '/' + id + '/');
+                modal.style.display = 'block';
+            });
+        });
+
+        // Botões de excluir
+        document.querySelectorAll('.btn-excluir').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.dataset.id;
+                const nome = this.dataset.nome || '';
+                document.getElementById('nomeClienteExcluir').textContent = nome;
+                formExcluir.action = urlExcluirBase.replace('/0/', '/' + id + '/');
+                modalExcluir.style.display = 'block';
+            });
+        });
+
+        // Fecha modais ao clicar fora do conteúdo
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) fecharModal();
+            if (event.target === modalExcluir) fecharModalExcluir();
+        });
+
+        // Intercepta o submit do formulário do modal para usar fetch (AJAX)
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const action = form.action || urlCadastrar;
+            const formData = new FormData(form);
+
+            // Pega CSRF token do input gerado pelo template
+            const csrfInput = form.querySelector('input[name="csrfmiddlewaretoken"]');
+            const csrfToken = csrfInput ? csrfInput.value : null;
+
+            fetch(action, {
+                method: 'POST',
+                body: formData,
+                headers: csrfToken ? { 'X-CSRFToken': csrfToken, 'X-Requested-With': 'XMLHttpRequest' } : { 'X-Requested-With': 'XMLHttpRequest' },
+            })
+            .then(response => {
+                // Se o backend redirecionou (padrão do Django em sucesso), recarrega a página
+                if (response.redirected) {
+                    window.location.href = response.url;
+                    return null;
+                }
+                // Caso retorno seja HTML (form com erros), atualiza o conteúdo do modal com o novo formulário
+                return response.text();
+            })
+            .then(text => {
+                if (!text) return;
+                // Tenta extrair o form retornado e substitui o existente para exibir erros
+                try {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(text, 'text/html');
+                    const novoForm = doc.getElementById('clienteForm');
+                    if (novoForm) {
+                        form.innerHTML = novoForm.innerHTML;
+                    } else {
+                        // Se não retornou o form, recarrega como fallback
+                        window.location.reload();
+                    }
+                } catch (err) {
+                    console.error('Erro ao processar resposta do servidor:', err);
+                    window.location.reload();
+                }
+            })
+            .catch(err => {
+                console.error('Erro na requisição:', err);
+                window.location.reload();
+            });
+        });
+
+        // Backend flags: le os markers HTML (renderizados condicionalmente pelo template)
+        if (document.getElementById('reabrir_cadastro')) {
+            modalTitle.textContent = 'Cadastrar Cliente';
+            form.action = urlCadastrar;
+            modal.style.display = 'block';
+        }
+
+        const elReabrirEdicao = document.getElementById('reabrir_edicao');
+        if (elReabrirEdicao) {
+            const pk = elReabrirEdicao.getAttribute('data-pk');
+            if (pk) {
+                modalTitle.textContent = 'Editar Cliente';
+                form.action = urlEditarBase.replace('/0/', '/' + pk + '/');
+                modal.style.display = 'block';
+            }
+        }
+
+    </script>
+ </body>
+ </html>
